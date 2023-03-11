@@ -10,7 +10,11 @@
 
 <body>
     <div class="pokedex">
-        <!-- entre pokedex e pokedex-screen fica a parte cinza com botões da pokedex -->
+        <!-- Entre pokedex e pokedex-screen fica a parte cinza com botões da pokedex -->
+        <div class="select-container">
+            <label for="type-select">Gerações:</label>
+            <ng-select [items]="geracoes" bindValue="id" [(ngModel)]="idGeracao"></ng-select>
+        </div>
         <div id="pokedex-screen">
             <div class="card" *ngFor="let poke of pokemons">
                 <img class="card-image" [src]="poke.image" />

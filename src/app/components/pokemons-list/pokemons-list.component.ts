@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { forkJoin } from 'rxjs';
+import { AtaqueService } from 'src/app/services/ataque.service';
+import { GeracaoService } from 'src/app/services/geracao.service';
+import { GetService } from 'src/app/services/get.service';
 import { PokemonService } from 'src/app/services/pokemon.service';
 
 @Component({
@@ -8,112 +12,152 @@ import { PokemonService } from 'src/app/services/pokemon.service';
   styleUrls: ['./pokemons-list.component.css']
 })
 export class PokemonsListComponent {
+  // Paginação
+  private nextPage: string = "";
+  private previousPage: string = "";
+
+
+  public idPokemon: number = 0;
   public pokemons: any[] = [];
 
-  constructor(private pokemonService: PokemonService) { }
+  public idGeracao: number = 0;
+  public geracoes: any[] = [];
+
+  public idAtaque: number = 0;
+  public ataques: any[] = [];
+
+  constructor(private pokemonService: PokemonService,
+    private getService: GetService,
+    private geracaoService: GeracaoService,
+    private ataqueService: AtaqueService) {
+    
+  }
 
   ngOnInit(): void {
     this.listarPaginaPokemons();
+    this.listarGeracoes();
+    this.listarAtaques();
   }
-
-  // listarPaginaPokemons() {
-  //   var numPokemons: number = 0 ;
-  //   var listaPokes = [];
-
-  //   //lista pokemons por paginação de 20 em 20
-  //   this.pokemonService.getPokemon("").subscribe(
-  //     {
-  //       next: (data) => {
-  //         console.log(data);
-  //         listaPokes = data.results;
-  //         numPokemons = this.pokemons.length;
-  //         //todo: preencher o valor dos botões de proxima pagina e pagina anterior
-  //         //
-  //         console.log(this.pokemons);
-  //       },
-  //       error: (error) => {
-  //         console.error("erro na busca de pokemons:");
-  //         console.error(error);
-  //       },
-  //       complete: () => {
-  //         console.log('Consulta concluída');
-  //         this.listarDetalhesPokemons(numPokemons);
-  //       }
-  //     }
-  //   );
-  // }
-
-  // listarDetalhesPokemons(tamanho: number) {
-  //   //busca pelos detalhes de cada pokemon da lista
-  //   for (let i = 0; i < tamanho; i++) {
-  //     this.pokemonService.getPokemon(i).subscribe(
-  //       {
-  //         next: (data) => {
-  //           console.log(data);
-  //           this.pokemons.push({
-  //             name: data.name,
-  //             image: data.sprites['front_default'],
-  //             type: data.types.map((type: any) => type.type.name).join(', '),
-  //             id: data.id
-  //           });
-  //           console.log(this.pokemons);
-  //         },
-  //         error: (error) => {
-  //           console.error("erro na busca do pokemon "+ i.toString()+":");
-  //           console.error(error);
-  //         },
-  //         complete: () => {
-  //           console.log('Consulta concluída');
-  //         }
-  //       }
-  //     );
-  //   }
-
-  // }
 
   listarPaginaPokemons() {
     this.pokemonService.getPokemon("").subscribe({
       next: (data) => {
-        console.log(data);
+        // console.log(data);
         this.listarDetalhesPokemons(data.results);
-        // todo: preencher o valor dos botões de proxima pagina e pagina anterior
-        console.log("listarPaginaPokemons");
-        console.log(this.pokemons);
+        // Preenche o valor dos botões de proxima pagina e pagina anterior
+        this.nextPage = data.next;
+        this.previousPage = data.previous;
       },
       error: (error) => {
-        console.error("erro na busca de pokemons:");
+        console.error("Erro na busca de pokemons:");
         console.error(error);
       },
       complete: () => {
-        console.log('Consulta concluída');
+        console.log('Consulta dos indices de todos Pokemons da api v2 concluída');
       },
     });
   }
-  
+
+  listarGeracoes() {
+    this.geracaoService.getGeracao("").subscribe({
+      next: (data) => {
+        // console.log(data);
+        this.geracoes = data.results;
+      },
+      error: (error) => {
+        console.error("Erro na busca de geracoes:");
+        console.error(error);
+      },
+      complete: () => {
+        console.log('Consulta de Geracoes concluída:');
+        console.log(this.geracoes);
+      },
+    });
+  }
+
+  listarAtaques() {
+    this.ataqueService.getAtaque("").subscribe({
+      next: (data) => {
+        // console.log(data);
+        this.ataques = data.results;
+        this.getService.get("https://pokeapi.co/api/v2/move/?limit=" + data.count).subscribe({
+          next: (data: any) => {
+            // console.log(data);
+            // debugger;
+            return data.results;
+          }
+        });
+      },
+      error: (error) => {
+        console.error("Erro na busca de ataques:");
+        console.error(error);
+      },
+      complete: () => {
+        console.log('Consulta de Ataques concluída:');
+        console.log(this.ataques);
+      },
+    });
+  }
+
   listarDetalhesPokemons(pokemons: any[]) {
     const observables = pokemons.map((pokemon) =>
       this.pokemonService.getPokemon(pokemon.name)
     );
-  
+
     forkJoin(observables).subscribe({
       next: (data) => {
-        console.log(data);
+        // console.log(data);
         this.pokemons = data.map((pokemon: any) => ({
           name: pokemon.name,
           image: pokemon.sprites['front_default'],
           type: pokemon.types.map((type: any) => type.type.name).join(', '),
           id: pokemon.id,
         }));
-        console.log(this.pokemons);
       },
       error: (error) => {
-        console.error("erro na busca dos detalhes dos pokemons:");
+        console.error("Erro na busca dos detalhes dos pokemons:");
+        console.error(error);
+      },
+      complete: () => {
+        console.log('Consulta dos detalhes dos Pokemons da pagina concluída:');
+        console.log(this.pokemons);
+      },
+    });
+  }
+
+  proximaPagina() {
+    this.getService.get(this.nextPage).subscribe({
+      next: (data) => {
+        this.listarDetalhesPokemons(data.results);
+      },
+      error: (error) => {
+        console.error("Erro na proxima pagina de pokemons:");
         console.error(error);
       },
       complete: () => {
         console.log('Consulta concluída');
       },
     });
+  }
+
+  paginaAnterior() {
+    this.getService.get(this.previousPage).subscribe({
+      next: (data) => {
+        this.listarDetalhesPokemons(data.results);
+      },
+      error: (error) => {
+        console.error("Erro na pagina anterior de pokemons:");
+        console.error(error);
+      },
+      complete: () => {
+        console.log('Consulta concluída');
+      },
+    });
+  }
+
+  onChangeIdGeracao(idGeracao: number) {
+    this.idGeracao = idGeracao;
+
   }
 
 }
