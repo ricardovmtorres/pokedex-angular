@@ -155,8 +155,11 @@ export class PokemonsListComponent {
     });
   }
 
-  onChangeIdGeracao(idGeracao: number) {
-    this.idGeracao = idGeracao;
+  onChangeIdGeracao(idGeracao: any) {
+    if (idGeracao.value != null){
+      this.idGeracao = idGeracao.value;
+      
+    }
 
   }
 
