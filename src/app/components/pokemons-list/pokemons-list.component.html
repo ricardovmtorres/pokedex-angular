@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemons</title>
+</head>
+
+<body>
+    <div class="pokedex">
+        <!-- entre pokedex e pokedex-screen fica a parte cinza com botões da pokedex -->
+        <div id="pokedex-screen">
+            <div class="card" *ngFor="let poke of pokemons">
+                <img class="card-image" [src]="poke.image" />
+                <h2 class="card-title">#{{ poke.id }} - {{ poke.name }}</h2>
+                <p class="card-subtitle">Type: {{ poke.type }}</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
