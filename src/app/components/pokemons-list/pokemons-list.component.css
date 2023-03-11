@@ -48,6 +48,10 @@
 }
 
 /* Entre pokedex e pokedex-screen fica a parte cinza com botões da pokedex */
+@font-face {
+    font-family: "Pokemon GB";
+    src: url("C:/Users/Pichau/Desktop/workspace/Psychometrika/pokedex-angular/src/assets/fonts/Pokemon GB.ttf");
+}
 
 #pokedex-screen {
     display: grid;
@@ -58,8 +62,8 @@
 
 .card {
     display: inline-block;
-    /* width: 200px;
-    height: 200px; */
+    font-family: "Pokemon GB", sans-serif;
+
     background-color: #fff;
     border: 1px solid #ccc;
     margin: 10px;
