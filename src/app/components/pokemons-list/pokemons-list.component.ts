@@ -16,14 +16,15 @@ export class PokemonsListComponent {
   private nextPage: string = "";
   private previousPage: string = "";
 
-
+  // Dados
   public idPokemon: number = 0;
   public pokemons: any[] = [];
-
-  public idGeracao: number = 0;
+  
+  // Filtro
+  public nameGeracao: string = "todas";
   public geracoes: any[] = [];
 
-  public idAtaque: number = 0;
+  public nameAtaque: string = "todos";
   public ataques: any[] = [];
 
   constructor(private pokemonService: PokemonService,
@@ -155,12 +156,47 @@ export class PokemonsListComponent {
     });
   }
 
-  onChangeIdGeracao(idGeracao: any) {
-    if (idGeracao.value != null){
-      this.idGeracao = idGeracao.value;
-      
+  onChangeIdGeracao() {
+    if (this.nameGeracao != "todas"){
+      this.geracaoService.getGeracao(this.nameGeracao).subscribe({
+        next: (data) => {
+          // console.log(data);
+          this.listarDetalhesPokemons(data.pokemon_species);
+          console.log(data.pokemon_species);
+          debugger;
+        },
+        error: (error) => {
+          console.error("Erro na busca de ataques:");
+          console.error(error);
+        },
+        complete: () => {
+          console.log('Consulta de Ataques concluída:');
+          console.log(this.ataques);
+        },
+      });
     }
-
+  }
+  
+  onChangeIdAtaque() {
+    if (this.nameAtaque != "todos"){
+      this.ataqueService.getAtaque(this.nameAtaque).subscribe({
+        next: (data) => {
+          // console.log(data);
+          var pokemonsAtaque = data.learned_by_pokemon;
+          this.listarDetalhesPokemons(data.learned_by_pokemon);
+          console.log(pokemonsAtaque);
+          debugger;
+        },
+        error: (error) => {
+          console.error("Erro na busca de ataques:");
+          console.error(error);
+        },
+        complete: () => {
+          console.log('Consulta de Ataques concluída:');
+          console.log(this.ataques);
+        },
+      });
+    }
   }
 
 }

@@ -11,10 +11,36 @@
 <body>
     <div class="pokedex">
         <!-- Entre pokedex e pokedex-screen fica a parte cinza com botões da pokedex -->
-        <select (change)="onChangeIdGeracao($event.target)">
-            <option value="">Selecione uma geração</option>
+        <select (change)="onChangeIdGeracao()">
+            <option value=-1>Todas gerações</option>
             <option *ngFor="let g of geracoes" [value]="g.id">{{g.name}}</option>
         </select>
+        
+
+        <ng-select
+            [items]="geracoes"
+            bindLabel="name"
+            bindValue="name"
+            [(ngModel)]=nameGeracao
+            placeholder="Todas geracoes"
+            (change)="onChangeIdGeracao()">
+            >
+        </ng-select>
+    
+        <!-- <select (change)="onChangeIdAtaque()">
+            <option value="">Todos ataques</option>
+            <option *ngFor="let g of ataques" [value]="g.id">{{g.name}}</option>
+        </select> -->
+
+        <ng-select
+            [items]="ataques"
+            bindLabel="name"
+            bindValue="name"
+            [(ngModel)]=nameAtaque
+            placeholder="Todos ataques"
+            (change)="onChangeIdAtaque()">
+            >
+        </ng-select>
         <div id="pokedex-screen">
             <div class="card" *ngFor="let poke of pokemons">
                 <img class="card-image" [src]="poke.image" />
