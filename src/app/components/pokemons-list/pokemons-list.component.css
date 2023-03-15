@@ -1,46 +1,227 @@
-/* Center Screen */
-.screen {
-    width: 100vw;
-    height: 100vh;
-    border: solid black;
-    border-radius: 0 0 0 17%;
-    display: grid;
-    grid-template-rows: 10% 72% 18%;
-    background-color: white;
+/* TELA CSS */
+
+/* @font-face {
+    font-family: "PixeloidMono";
+    src: url("/assets/fonts/PixeloidMono.ttf");
 }
 
+@font-face {
+    font-family: "PixeloidSans";
+    font-weight: normal;
+    src: url("assets/fonts/PixeloidSans.ttf");
+}
+
+@font-face {
+    font-family: "PixeloidSans";
+    font-weight: bold;
+    src: url("assets/fonts/PixeloidSansBold.ttf");
+} */
+
+/* Reset */
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+body {
+    font-family: 'PixeloidSans', sans-serif;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+
+/* Paleta de cores */
+
+.red {
+    background-color: #dc092c;
+}
+
+.yellow {
+    background-color: #fecb65;
+}
+
+.green {
+    background-color: #32cb65;
+}
+
+.blue {
+    background-color: #3298cb;
+}
+
+.light-blue {
+    background-color: #85bdfe;
+}
+
+.light-red {
+    background-color: #fe98cb;
+}
+
+.light-yellow {
+    background-color: #fefecb;
+}
+
+.light-green {
+    background-color: #98fe00;
+}
+
+body {
+    background-color: #dc092c;
+}
+
+
+/* BOTÕES SUPERIORES */
 .top-screen-lights {
     width: 50%;
-    margin-top: 2px;
     display: flex;
+    gap: 16px;
     justify-self: center;
     justify-content: center;
     align-items: center;
 }
 
 .mini-light {
-    border: solid black 1px;
-    width: 5px;
-    height: 5px;
+    border: solid black 2px;
+    width: 20px;
+    height: 20px;
     border-radius: 50%;
-    margin-right: 7px;
+    margin-right: 16px;
 }
 
-.red {
-    background-color: #ff0000;
+/* SELECT PERSONALIZADO */
+
+.custom-select select {
+    background: white;
+    color: black;
+    border: 3px solid black;
+    padding: 8px 8px 8px 10px;
+    border-radius: 4px;
+    box-shadow: inset -4px -4px grey;
 }
 
+/* Tela externa */
+
+.screen {
+    width: 80vw;
+    height: 80vh;
+    border: 4px solid black;
+    border-radius: 0 0 0 80px;
+    display: grid;
+    grid-template-rows: 10% 72% 18%;
+    background-color: white;
+}
+
+
+/* Tela interna */
 #main-screen {
     height: 100%;
     width: 80%;
     justify-self: center;
-    background-color: var(--main-screen-bg-color);
-    border: solid black 2px;
-    border-radius: 5%;
+    background-color: #98cb98;
+    border: solid black 4px;
+    border-radius: 32px;
+    background-image: url(https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png);
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
 }
+
+
+
+/* BOTÕES INFERIORES */
+
+.bottom-screen-lights {
+    display: flex;
+    margin-top: 5px;
+    width: 75%;
+    justify-self: center;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Botão vermelho */
+
+.small-light {
+    border: solid black;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+}
+
+
+.bottom-screen-lights .small-light {
+    border: solid black 4px;
+    width: 40px;
+    height: 40px;
+}
+
+
+
+/* Relfexo branco no botão vermelho  */
+.dot {
+    height: 5px;
+    width: 5px;
+    position: relative;
+    top: 3px;
+    left: 3px;
+    border-radius: 50%;
+}
+
+.bottom-screen-lights .dot {
+    height: 16px;
+    width: 16px;
+    top: 5px;
+    left: 5px;
+}
+
+
+/* Botões da paginação */
+
+.pag-button-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.pag-button {
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    border: black 4px solid;
+    background-color: #ffffff;
+    box-shadow: inset -4px -4px grey;
+}
+
+.pag-button.left {
+    background: url("/assets/images/seta-esquerda.svg") no-repeat center center;
+    background-size: 16px;
+}
+
+.pag-button.right {
+    background: url("/assets/images/seta-direita.svg") no-repeat center center;
+    background-size: 16px;
+
+}
+
+.pag-button:hover {
+    background-color: #e1e1e1;
+}
+
+.pag-button:active {
+    box-shadow: none;
+    transform: translateY(2px);
+}
+
+
+/* FIM DA TELA CSS */
+
 
 .pokedex {
     padding: 40px;
@@ -114,43 +295,5 @@
 }
 
 /* Fim da listagem */
-
-.bottom-screen-lights {
-    display: flex;
-    margin-top: 5px;
-    width: 75%;
-    justify-self: center;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.bottom-screen-lights .small-light {
-    border: solid black 2px;
-    width: 12px;
-    height: 12px;
-}
-
-.bottom-screen-lights .dot {
-    height: 4px;
-    width: 4px;
-    top: 2.5px;
-    left: 2px;
-}
-
-.dot {
-    height: 5px;
-    width: 5px;
-    position: relative;
-    top: 3px;
-    left: 3px;
-    border-radius: 50%;
-  }
-
-.line {
-    width: 18px;
-    height: 2px;
-    background-color: black;
-    margin-top: 2px;
-}
 
 /* Center Screen End */

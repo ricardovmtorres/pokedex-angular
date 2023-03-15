@@ -13,28 +13,42 @@
     <div class="screen-container">
         <div class="screen">
             <div class="top-screen-lights">
+                <div class="custom-select">
+                    <ng-select [items]="geracoes" bindLabel="name" bindValue="name" [(ngModel)]=nameGeracao
+                    placeholder="Todas geracoes" (change)="onChangeIdGeracao()">
+                    >
+                </ng-select>
+                </div>
+        
+                <div class="custom-select">
+                    <ng-select [items]="ataques" bindLabel="name" bindValue="name" [(ngModel)]=nameAtaque
+                    placeholder="Todos ataques" (change)="onChangeIdAtaque()">
+                    >
+                </ng-select>
+
+                </div>
+        
+                <div class="custom-select">
+                    <ng-select [items]="tiposAtaque" bindLabel="name" bindValue="name" [(ngModel)]=namesTiposAtaque
+                        placeholder="Todos os tipos" [multiple]="true" (change)="onChangeTipos()">
+                        >
+                    </ng-select>
+
+                </div>
+        
+        
                 <div class="mini-light red"></div>
                 <div class="mini-light red"></div>
-            </div>
+              </div>
             <div id="main-screen">
 
                 <div class="pokedex">
                     <!-- Entre pokedex e pokedex-screen fica a parte cinza com botões da pokedex -->
-                    <select (change)="onChangeIdGeracao()">
-                        <option value=-1>Todas gerações</option>
-                        <option *ngFor="let g of geracoes" [value]="g.id">{{g.name}}</option>
-                    </select>
-
-
-                    <ng-select [items]="geracoes" bindLabel="name" bindValue="name" [(ngModel)]=nameGeracao
+                
+                    <!-- <ng-select [items]="geracoes" bindLabel="name" bindValue="name" [(ngModel)]=nameGeracao
                         placeholder="Todas geracoes" (change)="onChangeIdGeracao()">
                         >
                     </ng-select>
-
-                    <!-- <select (change)="onChangeIdAtaque()">
-                        <option value="">Todos ataques</option>
-                        <option *ngFor="let g of ataques" [value]="g.id">{{g.name}}</option>
-                    </select> -->
 
                     <ng-select [items]="ataques" bindLabel="name" bindValue="name" [(ngModel)]=nameAtaque
                         placeholder="Todos ataques" (change)="onChangeIdAtaque()">
@@ -44,19 +58,20 @@
                     <ng-select [items]="tiposAtaque" bindLabel="name" bindValue="name" [(ngModel)]=namesTiposAtaque
                         placeholder="Todos os tipos" [multiple]="true" (change)="onChangeTipos()">
                         >
-                    </ng-select>
+                    </ng-select> -->
 
-                    <!-- <div id="pokedex-screen">
-                                    <div class="card" *ngFor="let poke of pokemons">
-                                        <img class="card-image" [src]="poke.image" />
-                                        <h2 class="card-title">#{{ poke.id }} - {{ poke.name }}</h2>
-                                        <p class="card-subtitle">Type: {{ poke.type }}</p>
-                                    </div>
-                                </div> -->
+                    <div id="pokedex-screen">
+                        <div class="card" *ngFor="let poke of pokemons">
+                            <img class="card-image" [src]="poke.image" />
+                            <h2 class="card-title">#{{ poke.id }} - {{ poke.name }}</h2>
+                            <p class="card-subtitle">Type: {{ poke.type }}</p>
+                        </div>
+                    </div>
                     <!-- Fim da listagem -->
                 </div>
 
             </div>
+
             <div class="bottom-screen-lights">
                 <div class="small-light red">
                     <div class="dot light-red"></div>
@@ -67,7 +82,6 @@
                     <div class="line"></div>
                     <div class="line"></div>
                 </div>
-                >>>>>>> screen-css
             </div>
         </div>
     </div>
