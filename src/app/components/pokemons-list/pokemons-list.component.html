@@ -41,6 +41,18 @@
             (change)="onChangeIdAtaque()">
             >
         </ng-select>
+
+        <ng-select
+            [items]="tiposAtaque"
+            bindLabel="name"
+            bindValue="name"
+            [(ngModel)]=namesTiposAtaque
+            placeholder="Todos os tipos"
+            [multiple]="true"
+            (change)="onChangeTipos()">
+            >
+        </ng-select>
+
         <div id="pokedex-screen">
             <div class="card" *ngFor="let poke of pokemons">
                 <img class="card-image" [src]="poke.image" />

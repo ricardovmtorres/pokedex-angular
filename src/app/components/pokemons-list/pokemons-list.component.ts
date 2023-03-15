@@ -19,7 +19,7 @@ export class PokemonsListComponent {
   // Dados
   public idPokemon: number = 0;
   public pokemons: any[] = [];
-  
+
   // Filtro
   public nameGeracao: string = "todas";
   public geracoes: any[] = [];
@@ -27,16 +27,20 @@ export class PokemonsListComponent {
   public nameAtaque: string = "todos";
   public ataques: any[] = [];
 
+  public namesTiposAtaque: any[] = [];
+  public tiposAtaque: any[] = [];
+
   constructor(private pokemonService: PokemonService,
     private getService: GetService,
     private geracaoService: GeracaoService,
     private ataqueService: AtaqueService) {
-    
+
   }
 
   ngOnInit(): void {
     this.listarPaginaPokemons();
     this.listarGeracoes();
+    this.listarTiposAtaques();
     this.listarAtaques();
   }
 
@@ -100,6 +104,23 @@ export class PokemonsListComponent {
     });
   }
 
+
+  listarTiposAtaques() {
+    this.pokemonService.getTipos("").subscribe({
+      next: (data) => {
+        console.log(data.results);
+        this.tiposAtaque = data.results;
+      },
+      error: (error) => {
+        console.error("Erro na busca de tipos de pokemons:");
+        console.error(error);
+      },
+      complete: () => {
+        console.log('Consulta dos tipos de todos Pokemons da api v2 concluída');
+      },
+    });
+  }
+
   listarDetalhesPokemons(pokemons: any[]) {
     const observables = pokemons.map((pokemon) =>
       this.pokemonService.getPokemon(pokemon.name)
@@ -157,11 +178,15 @@ export class PokemonsListComponent {
   }
 
   onChangeIdGeracao() {
-    if (this.nameGeracao != "todas"){
+    if (this.nameGeracao != "todas") {
       this.geracaoService.getGeracao(this.nameGeracao).subscribe({
         next: (data) => {
           // console.log(data);
           this.listarDetalhesPokemons(data.pokemon_species);
+
+          // Preenche o valor dos botões de proxima pagina e pagina anterior
+          this.nextPage = data.next;
+          this.previousPage = data.previous;
           console.log(data.pokemon_species);
           debugger;
         },
@@ -176,14 +201,17 @@ export class PokemonsListComponent {
       });
     }
   }
-  
+
   onChangeIdAtaque() {
-    if (this.nameAtaque != "todos"){
+    if (this.nameAtaque != "todos") {
       this.ataqueService.getAtaque(this.nameAtaque).subscribe({
         next: (data) => {
           // console.log(data);
           var pokemonsAtaque = data.learned_by_pokemon;
           this.listarDetalhesPokemons(data.learned_by_pokemon);
+          // Preenche o valor dos botões de proxima pagina e pagina anterior
+          this.nextPage = data.next;
+          this.previousPage = data.previous;
           console.log(pokemonsAtaque);
           debugger;
         },
@@ -199,4 +227,53 @@ export class PokemonsListComponent {
     }
   }
 
+  onChangeTipos() {
+    let allPokemons: any[] =  [];
+    if (this.namesTiposAtaque.length != 0) {
+      // Array dinâmico de observables que emitem vetores de nomes de pokémons
+      const observables = this.namesTiposAtaque.map(tipo => this.pokemonService.getTipos(tipo));
+
+      // Combina os resultados dos observables em um único observable
+      forkJoin(observables).subscribe({
+        next: (data) => {
+          console.log(data);
+          data.map(tipo =>{
+            tipo.pokemon.map((slot: { pokemon: any; }) => {
+              allPokemons = [...allPokemons, slot.pokemon]
+            })
+          });
+          // console.log(allPokemons);
+          debugger;
+        },
+        error: (error) => {
+          console.error(error);
+        },
+        complete: () =>{
+          this.listarDetalhesPokemons(allPokemons);
+        }
+      }
+      );
+
+      this.ataqueService.getAtaque(this.nameAtaque).subscribe({
+        next: (data) => {
+          // console.log(data);
+          var pokemonsAtaque = data.learned_by_pokemon;
+          this.listarDetalhesPokemons(data.learned_by_pokemon);
+          // Preenche o valor dos botões de proxima pagina e pagina anterior
+          this.nextPage = data.next;
+          this.previousPage = data.previous;
+          console.log(pokemonsAtaque);
+          debugger;
+        },
+        error: (error) => {
+          console.error("Erro na busca de ataques:");
+          console.error(error);
+        },
+        complete: () => {
+          console.log('Consulta de Ataques concluída:');
+          console.log(this.ataques);
+        },
+      });
+    }
+  }
 }
