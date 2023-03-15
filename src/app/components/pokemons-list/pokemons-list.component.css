@@ -231,7 +231,7 @@ body {
 /* Entre pokedex e pokedex-screen fica a parte cinza com botões da pokedex */
 @font-face {
     font-family: "Pokemon GB";
-    src: url("src/assets/fonts/Pokemon GB.ttf");
+    src: url("src/assets/fonts/PokemonGB.ttf");
 }
 
 #pokedex-screen {

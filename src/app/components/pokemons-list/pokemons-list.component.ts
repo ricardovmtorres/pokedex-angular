@@ -19,6 +19,8 @@ export class PokemonsListComponent {
   // Dados
   public idPokemon: number = 0;
   public pokemons: any[] = [];
+  public locations: any[] = [];
+  public exibePokemons: boolean = false;
 
   // Filtro
   public nameGeracao: string = "todas";
@@ -228,7 +230,7 @@ export class PokemonsListComponent {
   }
 
   onChangeTipos() {
-    let allPokemons: any[] =  [];
+    let allPokemons: any[] = [];
     if (this.namesTiposAtaque.length != 0) {
       // Array dinâmico de observables que emitem vetores de nomes de pokémons
       const observables = this.namesTiposAtaque.map(tipo => this.pokemonService.getTipos(tipo));
@@ -237,7 +239,7 @@ export class PokemonsListComponent {
       forkJoin(observables).subscribe({
         next: (data) => {
           console.log(data);
-          data.map(tipo =>{
+          data.map(tipo => {
             tipo.pokemon.map((slot: { pokemon: any; }) => {
               allPokemons = [...allPokemons, slot.pokemon]
             })
@@ -248,7 +250,7 @@ export class PokemonsListComponent {
         error: (error) => {
           console.error(error);
         },
-        complete: () =>{
+        complete: () => {
           this.listarDetalhesPokemons(allPokemons);
         }
       }
@@ -275,5 +277,23 @@ export class PokemonsListComponent {
         },
       });
     }
+  }
+
+  buscarLocalidadesPorAtaque() {
+    this.ataqueService.getAtaque(this.nameAtaque).subscribe({
+      next: (data) => {
+        const pokemonObservables = data.pokemon.map((p: { pokemon: { url: string; }; }) => this.getService.get(p.pokemon.url));
+        forkJoin(pokemonObservables).subscribe({
+          next: (data) => {
+            this.locations = data as any;
+            // .filter((location: string) => location !== '');
+          },
+        });
+      },
+    });
+  }
+  
+  mudaExibição(){
+    this.exibePokemons = !this.exibePokemons
   }
 }

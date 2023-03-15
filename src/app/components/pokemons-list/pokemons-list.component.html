@@ -13,7 +13,7 @@
     <div class="screen-container">
         <div class="screen">
             <div class="top-screen-lights">
-                <div class="custom-select">
+                <div class="custom-select" *ngIf="exibePokemons">
                     <ng-select [items]="geracoes" bindLabel="name" bindValue="name" [(ngModel)]=nameGeracao
                     placeholder="Todas geracoes" (change)="onChangeIdGeracao()">
                     >
@@ -28,7 +28,7 @@
 
                 </div>
         
-                <div class="custom-select">
+                <div class="custom-select" *ngIf="exibePokemons">
                     <ng-select [items]="tiposAtaque" bindLabel="name" bindValue="name" [(ngModel)]=namesTiposAtaque
                         placeholder="Todos os tipos" [multiple]="true" (change)="onChangeTipos()">
                         >
@@ -60,7 +60,7 @@
                         >
                     </ng-select> -->
 
-                    <div id="pokedex-screen">
+                    <div id="pokedex-screen" *ngIf="exibePokemons">
                         <div class="card" *ngFor="let poke of pokemons">
                             <img class="card-image" [src]="poke.image" />
                             <h2 class="card-title">#{{ poke.id }} - {{ poke.name }}</h2>
