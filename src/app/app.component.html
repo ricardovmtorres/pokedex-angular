@@ -35,18 +35,19 @@
   }
 
   .toolbar {
-    position: absolute;
+    position: relative;
     top: 0;
     left: 0;
     right: 0;
-    height: 60px;
+    height: 80px;
     display: flex;
     align-items: center;
     background-color: #1976d2;
+    border-bottom: 4px solid #03294e;
     color: white;
     font-weight: 600;
   }
-
+  
   .toolbar img {
     margin: 0 16px;
   }
@@ -93,23 +94,6 @@
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 16px;
-  }
-
-  .card {
-    all: unset;
-    border-radius: 4px;
-    border: 1px solid #eee;
-    background-color: #fafafa;
-    height: 40px;
-    width: 200px;
-    margin: 0 8px 16px;
-    padding: 16px;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.2s ease-in-out;
-    line-height: 24px;
   }
 
   .card-container .card:not(:last-child) {
@@ -327,16 +311,5 @@
       </svg>
     </a>
 </div>
-
-<div class="content" role="main"></div>
-<!-- todo: continuar com layout -->
-
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced. * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * End of Placeholder * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
 <router-outlet></router-outlet>

@@ -1,21 +1,10 @@
 /* TELA CSS */
 
-/* @font-face {
-    font-family: "PixeloidMono";
-    src: url("/assets/fonts/PixeloidMono.ttf");
-}
-
 @font-face {
     font-family: "PixeloidSans";
     font-weight: normal;
-    src: url("assets/fonts/PixeloidSans.ttf");
+    src: url("src/assets/fonts/PixeloidSans.ttf");
 }
-
-@font-face {
-    font-family: "PixeloidSans";
-    font-weight: bold;
-    src: url("assets/fonts/PixeloidSansBold.ttf");
-} */
 
 /* Reset */
 
@@ -33,8 +22,30 @@ body {
     flex-direction: column;
     justify-content: start;
     align-items: center;
+    background-color: #dc092c;
+    margin: 0!important;
+    padding-top: 32px;
 }
 
+/* Scrollbar styles */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+    }
+    
+    ::-webkit-scrollbar-track {
+    background: #f5f5f5;
+    border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: #ccc;  
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+    background: #999;  
+    }
 
 /* Paleta de cores */
 
@@ -70,14 +81,9 @@ body {
     background-color: #98fe00;
 }
 
-body {
-    background-color: #dc092c;
-}
-
 
 /* BOTÕES SUPERIORES */
 .top-screen-lights {
-    width: 50%;
     display: flex;
     gap: 16px;
     justify-self: center;
@@ -89,20 +95,81 @@ body {
     border: solid black 2px;
     width: 20px;
     height: 20px;
-    border-radius: 50%;
-    margin-right: 16px;
+    border-radius: 50px;
+    box-shadow: 2px 2px 0 #ccc, inset 3px 3px #c10202;
 }
 
-/* SELECT PERSONALIZADO */
+/* TOGGLE PERSONALIZADO */
 
-.custom-select select {
-    background: white;
-    color: black;
-    border: 3px solid black;
-    padding: 8px 8px 8px 10px;
-    border-radius: 4px;
-    box-shadow: inset -4px -4px grey;
+.tg-list {
+	text-align: center;
+	display: inline-block;
+	align-items: center;
 }
+
+.tg-list-item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.tgl {
+    display: none;
+  }
+  .tgl, .tgl:after, .tgl:before, .tgl *, .tgl *:after, .tgl *:before, .tgl + .tgl-btn {
+    box-sizing: border-box;
+  }
+  .tgl::selection, .tgl:after::selection, .tgl:before::selection, .tgl *::selection, .tgl *:after::selection, .tgl *:before::selection, .tgl + .tgl-btn::selection {
+    background: none;
+  }
+  .tgl + .tgl-btn {
+    outline: 0;
+    display: block;
+    width: 4em;
+    height: 2em;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+  }
+  .tgl + .tgl-btn:after, .tgl + .tgl-btn:before {
+    position: relative;
+    display: block;
+    content: "";
+    width: 50%;
+    height: 100%;
+  }
+  .tgl + .tgl-btn:after {
+    left: 0;
+  }
+  .tgl + .tgl-btn:before {
+    display: none;
+  }
+  .tgl:checked + .tgl-btn:after {
+    left: 50%;
+  }
+  
+  .tgl-flat + .tgl-btn {
+    padding: 2px;
+    transition: all 0.2s ease;
+    background: #fff;
+    border: 4px solid black;
+    border-radius: 2em;
+  }
+  .tgl-flat + .tgl-btn:after {
+    transition: all 0.2s ease;
+    background: #dc092c;
+    content: "";
+    border-radius: 1em;
+  }
+  .tgl-flat:checked + .tgl-btn {
+    border: 4px solid black;
+  }
+  .tgl-flat:checked + .tgl-btn:after {
+    left: 50%;
+    background: #56b156;
+  }
+
 
 /* Tela externa */
 
@@ -114,6 +181,7 @@ body {
     display: grid;
     grid-template-rows: 10% 72% 18%;
     background-color: white;
+    box-shadow: 8px 8px #00000029;
 }
 
 
@@ -122,13 +190,11 @@ body {
     height: 100%;
     width: 80%;
     justify-self: center;
-    background-color: #98cb98;
+    background-color: #56b156;
     border: solid black 4px;
     border-radius: 32px;
-    background-image: url(https://assets.pokemon.com/assets/cms2/img/pokedex/full/001.png);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
+    overflow: auto;
+    box-shadow: 8px 8px #00000029;
 }
 
 
@@ -158,6 +224,7 @@ body {
     border: solid black 4px;
     width: 40px;
     height: 40px;
+    box-shadow: 4px 4px #00000029;
 }
 
 
@@ -200,12 +267,12 @@ body {
 }
 
 .pag-button.left {
-    background: url("/assets/images/seta-esquerda.svg") no-repeat center center;
+    background: url("/assets/imgs/seta-esquerda.svg") no-repeat center center;
     background-size: 16px;
 }
 
 .pag-button.right {
-    background: url("/assets/images/seta-direita.svg") no-repeat center center;
+    background: url("src/assets/imgs/seta-direita.svg") no-repeat center center;
     background-size: 16px;
 
 }
@@ -242,38 +309,43 @@ body {
 }
 
 .card {
+    position: relative;
     display: inline-block;
     font-family: "Pokemon GB", sans-serif;
-
     background-color: #fff;
-    border: 1px solid #ccc;
     margin: 10px;
-
     list-style: none;
-    padding: 40px;
+    padding: 16px;
     color: #222;
     text-align: center;
+    overflow: hidden;
+    box-shadow: 8px 8px #00000029;
 }
 
 .card:hover {
     animation: bounce 0.5s linear;
-}
+}   
+
 
 .card-title {
     text-transform: capitalize;
     margin-bottom: 0px;
-    font-size: 32px;
+    font-size: 16px;
     font-weight: normal;
+    letter-spacing: -2px;
 }
 
 .card-subtitle {
+    font-family: 'PixeloidSans', sans-serif;
+    font-size: 16px;
     margin-top: 5px;
     color: #666;
-    font-weight: lighter;
+
 }
 
 .card-image {
     height: 180px;
+    margin-bottom: -16px;
 }
 
 @keyframes bounce {

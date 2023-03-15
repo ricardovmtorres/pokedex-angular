@@ -23,13 +23,13 @@ export class PokemonsListComponent {
   public exibePokemons: boolean = true;
 
   // Filtro
-  public nameGeracao: string = "todas";
+  public nameGeracao: string = "Todas Geracoes";
   public geracoes: any[] = [];
 
-  public nameAtaque: string = "todos";
+  public nameAtaque: string = "Todos Ataques";
   public ataques: any[] = [];
 
-  public namesTiposAtaque: any[] = [];
+  public namesTiposAtaque: any[] = ["Todos os Tipos"];
   public tiposAtaque: any[] = [];
 
   constructor(private pokemonService: PokemonService,
@@ -232,6 +232,7 @@ export class PokemonsListComponent {
 
   onChangeTipos() {
     let allPokemons: any[] = [];
+    this.namesTiposAtaque = this.namesTiposAtaque.filter(tipo => tipo !== "Todos os Tipos");
     if (this.namesTiposAtaque.length != 0) {
       // Array dinâmico de observables que emitem vetores de nomes de pokémons
       const observables = this.namesTiposAtaque.map(tipo => this.pokemonService.getTipos(tipo));
@@ -281,32 +282,59 @@ export class PokemonsListComponent {
   }
 
   buscarLocalidadesPorAtaque(pokemons: any[]) {
+    let pokemonsAtaque: any[] = [];
+    let locais: any[] = [];
     const pokemonObservables = pokemons.map((p) => this.getService.get(p.url));
     forkJoin(pokemonObservables).subscribe({
       next: (data) => {
-        this.locations.push((data as any).location_area_encounters);
+        data.map(poke => {
+          pokemonsAtaque.push(poke.location_area_encounters);
+        });
+        
+        const observables = pokemonsAtaque.map(localizacao =>
+          this.getService.get(localizacao)
+        );
+    
+        forkJoin(observables).subscribe({
+          next: (data) => {
+            console.log(data);
+            locais = [].concat(...data);
+            
+            this.listarDetalhesLocalizacoes(locais);
+          },
+          error: (error) => {
+            console.error("Erro na busca dos detalhes das localizacoes:");
+            console.error(error);
+          },
+          complete: () => {
+            console.log('Consulta dos detalhes das localizacoes da pagina concluída:');
+            console.log(this.pokemons);
+          },
+        });
+
       },
     });
     
-    this.listarDetalhesLocalizacoes(this.locations);
   }
 
-  mudaExibição() {
+  mudaExibicao() {
     this.exibePokemons = !this.exibePokemons
   }
 
   listarDetalhesLocalizacoes(localizacoes: any[]) {
-    const observables = localizacoes.map((localizacao) =>
-      this.getService.get(localizacao)
+    const observables = localizacoes.map(localizacao =>
+      this.getService.get(localizacao.location_area.url)
     );
 
     forkJoin(observables).subscribe({
       next: (data) => {
-        // console.log(data);
+        console.log(data);
+        // const locais = [].concat(...data);
         this.locations = data.map((local: any) => ({
           id: local.id,
-          name: local.name,
-          region: local.region[0].name,
+          tag: local.name,
+          name: local.names[0].name,
+          // region: local.region[0].name,
         }));
       },
       error: (error) => {
@@ -315,7 +343,7 @@ export class PokemonsListComponent {
       },
       complete: () => {
         console.log('Consulta dos detalhes das localizacoes da pagina concluída:');
-        console.log(this.pokemons);
+        console.log(this.locations);
       },
     });
   }

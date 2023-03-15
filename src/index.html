@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en">
+<html lang="PT">
+
 <head>
   <meta charset="utf-8">
   <title>Pokedex Angular</title>
@@ -7,7 +8,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="assets\imgs\pokeball-pixel-logo.svg">
 </head>
-<body>
-  <app-root></app-root>
-</body>
+<app-root></app-root>
+
+<style>
+  /* SOBREESCREVER PROPRIEDADES */
+  body {
+    margin: 0;
+  }
+
+  html {
+    overflow: hidden;
+  }
+
+  /* SELECT PERSONALIZADO */
+  .custom-select {
+    background: white;
+    color: black;
+    border: 3px solid black;
+    padding: 8px 8px 8px 10px;
+    border-radius: 4px;
+    box-shadow: inset -4px -4px grey;
+  }
+
+  .ng-dropdown-panel {
+    background: #fff;
+    padding: 0 8px;
+    border: 3px solid black;
+  }
+
+  .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+    margin: 8px 0;
+  }
+
+  .ng-select .ng-clear-wrapper {
+    margin-left: 8px;
+  }
+
+  .ng-option:hover .ng-option-label {
+    opacity: 0.6;
+  }
+
+  .ng-select-multiple .ng-value {
+    margin-right: 16px;
+  }
+</style>
+
 </html>
