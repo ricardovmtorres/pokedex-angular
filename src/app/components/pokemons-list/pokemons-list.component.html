@@ -67,6 +67,13 @@
                             <p class="card-subtitle">Type: {{ poke.type }}</p>
                         </div>
                     </div>
+                    
+                    <div id="pokedex-screen" *ngIf="!exibePokemons">
+                        <div class="card" *ngFor="let local of locations">
+                            <h2 class="card-title">#{{ local.id }} - {{ local.name }}</h2>
+                            <p class="card-subtitle">Region: {{ local.region }}</p>
+                        </div>
+                    </div>
                     <!-- Fim da listagem -->
                 </div>
 

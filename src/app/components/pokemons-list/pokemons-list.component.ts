@@ -20,7 +20,7 @@ export class PokemonsListComponent {
   public idPokemon: number = 0;
   public pokemons: any[] = [];
   public locations: any[] = [];
-  public exibePokemons: boolean = false;
+  public exibePokemons: boolean = true;
 
   // Filtro
   public nameGeracao: string = "todas";
@@ -190,7 +190,7 @@ export class PokemonsListComponent {
           this.nextPage = data.next;
           this.previousPage = data.previous;
           console.log(data.pokemon_species);
-          debugger;
+          // debugger;
         },
         error: (error) => {
           console.error("Erro na busca de ataques:");
@@ -210,12 +210,13 @@ export class PokemonsListComponent {
         next: (data) => {
           // console.log(data);
           var pokemonsAtaque = data.learned_by_pokemon;
+          this.buscarLocalidadesPorAtaque(pokemonsAtaque);
           this.listarDetalhesPokemons(data.learned_by_pokemon);
           // Preenche o valor dos botões de proxima pagina e pagina anterior
           this.nextPage = data.next;
           this.previousPage = data.previous;
           console.log(pokemonsAtaque);
-          debugger;
+          // debugger;
         },
         error: (error) => {
           console.error("Erro na busca de ataques:");
@@ -245,7 +246,7 @@ export class PokemonsListComponent {
             })
           });
           // console.log(allPokemons);
-          debugger;
+          // debugger;
         },
         error: (error) => {
           console.error(error);
@@ -265,7 +266,7 @@ export class PokemonsListComponent {
           this.nextPage = data.next;
           this.previousPage = data.previous;
           console.log(pokemonsAtaque);
-          debugger;
+          // debugger;
         },
         error: (error) => {
           console.error("Erro na busca de ataques:");
@@ -279,21 +280,44 @@ export class PokemonsListComponent {
     }
   }
 
-  buscarLocalidadesPorAtaque() {
-    this.ataqueService.getAtaque(this.nameAtaque).subscribe({
+  buscarLocalidadesPorAtaque(pokemons: any[]) {
+    const pokemonObservables = pokemons.map((p) => this.getService.get(p.url));
+    forkJoin(pokemonObservables).subscribe({
       next: (data) => {
-        const pokemonObservables = data.pokemon.map((p: { pokemon: { url: string; }; }) => this.getService.get(p.pokemon.url));
-        forkJoin(pokemonObservables).subscribe({
-          next: (data) => {
-            this.locations = data as any;
-            // .filter((location: string) => location !== '');
-          },
-        });
+        this.locations.push((data as any).location_area_encounters);
+      },
+    });
+    
+    this.listarDetalhesLocalizacoes(this.locations);
+  }
+
+  mudaExibição() {
+    this.exibePokemons = !this.exibePokemons
+  }
+
+  listarDetalhesLocalizacoes(localizacoes: any[]) {
+    const observables = localizacoes.map((localizacao) =>
+      this.getService.get(localizacao)
+    );
+
+    forkJoin(observables).subscribe({
+      next: (data) => {
+        // console.log(data);
+        this.locations = data.map((local: any) => ({
+          id: local.id,
+          name: local.name,
+          region: local.region[0].name,
+        }));
+      },
+      error: (error) => {
+        console.error("Erro na busca dos detalhes das localizacoes:");
+        console.error(error);
+      },
+      complete: () => {
+        console.log('Consulta dos detalhes das localizacoes da pagina concluída:');
+        console.log(this.pokemons);
       },
     });
   }
-  
-  mudaExibição(){
-    this.exibePokemons = !this.exibePokemons
-  }
+
 }
